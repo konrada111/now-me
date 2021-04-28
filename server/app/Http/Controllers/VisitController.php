@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Visit as VisitResource;
 use App\Models\Visit;
 use Validator;
+use Carbon\Carbon;
 
 class VisitController extends Controller
 {
@@ -26,20 +27,42 @@ class VisitController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $visit = new Visit;
+        $flag = 0;
+        $start_time = new Carbon($request->start);
+        $end_time = new Carbon($request->end);
+        $allVisits = Visit::all();
+        foreach ($allVisits as $vis){
+            $dStart = new Carbon($vis->start);
+            $dEnd = new Carbon($vis->end);
+            for( $i = 0; $i < ($start_time->diffInMinutes($end_time )) + 1; $i= $i + 10) {
+                $start_time->addMinutes(10);
+                $diffStart = $dStart->diffInMinutes($start_time);
+                $diffEnd = $dEnd->diffInMinutes($start_time);
+                if(($diffStart + $diffEnd) == $dStart->diffInMinutes($dEnd)){
+                    $flag = 1;
+                }
+            }
+        }
+        if ($flag == 0){
+            $visit = new Visit;
+            $visit->employee_id = $request->employee_id;
+            $visit->user_id = $request->user_id;
+            $visit->service_id = $request->service_id;
+            $visit->is_paid = false;
+            $visit->start = $request->start;
+            $visit->end = $request->end;
 
-        $visit->employee_id = $request->employee_id;
-        $visit->user_id = $request->user_id;
-        $visit->service_id = $request->service_id;
-        $visit->is_paid = false;
-        $visit->start = $request->start ;
-        $visit->end = $request->end;
-
-        if($visit->save()){
+            if($visit->save()){
+                return response()->json([
+                    'message' => 'Visit successfully created',
+                    'visit' => new VisitResource($visit)
+                ], 201);
+            }
+        }
+        else{
             return response()->json([
-                'message' => 'Visit successfully created',
-                'visit' => new VisitResource($visit)
-            ], 201);
+                'message' => 'Visit with that datetime already exists'
+            ], 422);
         }
     }
 
