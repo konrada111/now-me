@@ -67,6 +67,15 @@ class ServiceController extends Controller
             'service' => $service
         ], 201);
     }
+    public function getServicesByEmployee(Request $request)
+    {
+        $services = Service::where('employee_id',$request->employee_id)->get();
+
+        return response()->json([
+            'message' => 'Services successfully returned',
+            'services' => $services
+        ], 201);
+    }
     public function deleteService(Request $request)
     {
         $service = Service::findOrFail($request->id);
@@ -75,7 +84,7 @@ class ServiceController extends Controller
 
         return response()->json([
             'message' => 'Service successfully deleted',
-            'employee' => $service
+            'services' => $service
         ], 201);
     }
 }

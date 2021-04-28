@@ -78,6 +78,7 @@ Route::group([
 ], function($router){
     Route::get('/services',[ServiceController::class,'getServices']);
     Route::get('/service/{id}',[ServiceController::class,'getService']);
+    Route::get('/services-by-employee/{employee_id}',[ServiceController::class,'getServicesByEmployee']);
 });
 
 // Wizyty
