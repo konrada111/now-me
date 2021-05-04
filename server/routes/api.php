@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -94,4 +96,10 @@ Route::group([
     Route::get('/visit/{id}',[VisitController::class,'getSingleVisit']);
     Route::post('/visit',[VisitController::class,'createVisit']);
     Route::delete('/visit/{id}',[VisitController::class,'destroyVisit']);
+});
+// Maile
+Route::group([
+    'middleware' => 'is.admin',
+], function($router){
+    Route::post('/emails',[EmailController::class,'sendEmails']);
 });
