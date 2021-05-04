@@ -97,5 +97,9 @@ Route::group([
     Route::post('/visit',[VisitController::class,'createVisit']);
     Route::delete('/visit/{id}',[VisitController::class,'destroyVisit']);
 });
-//Route::post('/mailsHistory',[HistoryController::class,'historyCheck']);
-Route::post('/emails',[EmailController::class,'sendEmails']);
+// Maile
+Route::group([
+    'middleware' => 'is.admin',
+], function($router){
+    Route::post('/emails',[EmailController::class,'sendEmails']);
+});
