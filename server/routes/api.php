@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -95,3 +97,5 @@ Route::group([
     Route::post('/visit',[VisitController::class,'createVisit']);
     Route::delete('/visit/{id}',[VisitController::class,'destroyVisit']);
 });
+//Route::post('/mailsHistory',[HistoryController::class,'historyCheck']);
+Route::post('/emails',[EmailController::class,'sendEmails']);
