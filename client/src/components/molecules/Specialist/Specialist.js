@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useRouteMatch } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
+import SpecialistServices from '../../organism/SpecialistServices/SpecialistServices';
 
 const Specialist = ({ data: { firstName, lastName, id, profession } }) => {
-  let match = useRouteMatch();
+  let { path, url } = useRouteMatch();
+
   return (
     <Wrapper>
       <Icon>
@@ -16,7 +18,7 @@ const Specialist = ({ data: { firstName, lastName, id, profession } }) => {
         <span>{lastName}</span>
       </Name>
       <ProffesionName>{profession}</ProffesionName>
-      <More to={`${match.url}?${id}`}>More...</More>
+      <More to={`${path}/${id}?`}>More...</More>
     </Wrapper>
   );
 };
@@ -58,7 +60,7 @@ const ProffesionName = styled.p`
   place-items: center;
   grid-row-start: 3;
 `;
-const More = styled(NavLink)`
+const More = styled(Link)`
   color: #5163a2;
   cursor: pointer;
   text-decoration: none;

@@ -13,6 +13,7 @@ import AdminPanel from './AdminPanel';
 import HomePage from './HomePage';
 import ProtectedRoute from 'ProtectedRoute/ProtectedRoute';
 import Specialist from './Specialist';
+import SpecialistServices from '../components/organism/SpecialistServices/SpecialistServices';
 
 function App() {
   const token = useSelector(selectUserToken);
@@ -34,8 +35,11 @@ function App() {
               <LoginView />
             </Route>
             <ProtectedRoute path="/admin-panel" component={AdminPanel} isAuth={role} />
-            <Route path="/specialist">
+            <Route path="/specialist" exact>
               <Specialist />
+            </Route>
+            <Route path="/specialist/xd" exact>
+              <SpecialistServices />
             </Route>
           </Switch>
         </MainTemplate>
