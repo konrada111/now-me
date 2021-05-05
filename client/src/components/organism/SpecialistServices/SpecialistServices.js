@@ -11,7 +11,7 @@ const SpecialistServices = () => {
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      await axios.get('http://127.0.0.1:8000/api/services-by-employee/25').then((response) => console.log(response.data));
+      await axios.get('http://127.0.0.1:8000/api/services-by-employee/2').then((response) => console.log(response.data));
     };
     fetchEmployees();
   }, []);
