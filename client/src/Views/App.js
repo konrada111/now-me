@@ -14,11 +14,12 @@ import HomePage from './HomePage';
 import ProtectedRoute from 'ProtectedRoute/ProtectedRoute';
 import Specialist from './Specialist';
 import SpecialistServices from '../components/organism/SpecialistServices/SpecialistServices';
+import Calendar from 'components/organism/Calendar/Calendar';
 
 function App() {
   const token = useSelector(selectUserToken);
   const role = useSelector(selectUserRole);
-
+  const today = new Date().toString().split(' ').splice(1, 3).join(' ');
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -40,6 +41,9 @@ function App() {
             </Route>
             <Route path="/specialist/:id" exact>
               <SpecialistServices />
+            </Route>
+            <Route path="/specialist/:id/:service" exact>
+              <Calendar date={today} />
             </Route>
           </Switch>
         </MainTemplate>
