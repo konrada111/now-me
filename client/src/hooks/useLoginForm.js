@@ -49,6 +49,8 @@ const useLoginForm = () => {
                 userRole: response.data.user.role,
               })
             );
+            localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem('role', response.data.user.role);
 
             Swal.fire({
               icon: 'success',
@@ -56,9 +58,7 @@ const useLoginForm = () => {
               confirmButtonText: `Ok`,
             }).then((result) => {
               if (result.isConfirmed) {
-                {
-                  history.push('/');
-                }
+                history.push('/');
               }
             });
           }
