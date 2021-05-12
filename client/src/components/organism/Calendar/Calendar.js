@@ -1,20 +1,24 @@
-import React from 'react';
+import React, {useContext, useEffect, useImperativeHandle, useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: '50px',
     width: '100px',
     height: '100px',
-    backgroundColor: 'pink',
+    backgroundColor: 'rgb(244,82,103)',
     margin: 'auto',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     '&:hover': {
-      backgroundColor: 'red',
+      backgroundColor: 'rgb(237,59,71)',
     }
   },
   emptyPaper: {
@@ -26,9 +30,31 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  weekdayPaper: {
+    marginTop: '50px',
+    width: '100px',
+    height: '50px',
+    color: 'rgb(244,82,103)',
+    margin: 'auto',
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  navbar: {
+    backgroundColor: 'rgb(244,82,103)',
+  },
+  button: {
+    backgroundColor: 'transparent',
+    '&:hover': {
+      backgroundColor: 'rgb(237,59,71)',
+    }
+  },
+  month_year: {
+    textAlign: 'center',
+  },
 }));
 
-function Button(day) {
+function FilledButton(day) {
   const classes = useStyles();
   return(
     <Paper className={classes.paper}>{day}</Paper>
@@ -46,41 +72,50 @@ export default function Calendar(props) {
   const classes = useStyles();
 
   const names = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-  let date = new Date(props.date)
-  let firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  let lastDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 0)
-  let temp = firstDayOfMonth.getDay()===0 ? 6 : firstDayOfMonth.getDay()-1
+  const [date,setDate] = useState(new Date(props.date))
+  const [result,setResult] = useState([])
+  const [month,setMonth] = useState('')
+  const [year,setYear] = useState('')
 
-  const weekdaysBeforeFirst = new Array(temp).fill(0)
 
-  const allMonthDays = Array.from({length: new Date(date.getFullYear(), date.getMonth()+1, 0).getDate()}, (_, i) => i + 1);
-
-  console.log(allMonthDays)
-
-  let daysArray = weekdaysBeforeFirst.concat(allMonthDays)
-
-  function fillDays(daysLoop) {
-    while(daysLoop.length%7!==0) {
-        daysLoop.push(0)
+  useEffect(()=>{
+    setMonth(date.getMonth());
+    setYear(date.getFullYear());
+    let firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    let lastDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 0)
+    let temp = firstDayOfMonth.getDay()===0 ? 6 : firstDayOfMonth.getDay()-1
+  
+    const weekdaysBeforeFirst = new Array(temp).fill(0)
+  
+    const allMonthDays = Array.from({length: new Date(date.getFullYear(), date.getMonth()+1, 0).getDate()}, (_, i) => i + 1);
+  
+    let daysArray = weekdaysBeforeFirst.concat(allMonthDays)
+  
+    while(daysArray.length%7!==0) {
+      daysArray.push(0)
     }
-  }
-
-  fillDays(daysArray)
-
-  function chunkArray(myArray, chunk_size) {
+  
     let index = 0;
-    let arrayLength = myArray.length;
+    let arrayLength = daysArray.length;
     let tempArray = [];
-    for (index = 0; index < arrayLength; index += chunk_size) {
-        tempArray.push(myArray.slice(index, index+chunk_size));
+    for (index = 0; index < arrayLength; index += 7) {
+        tempArray.push(daysArray.slice(index, index+7));
     }
-    return tempArray;
+  
+    setResult(tempArray)
+  },[date])
+
+  function handleOnSubmitLeft(e){
+    let day = new Date(date.getFullYear(), date.getMonth()-1, 1);
+    setDate(day)
   }
 
-  let result = chunkArray(daysArray, 7);
-
-  console.log(result)
+  function handleOnSubmitRight(e){
+    let day = new Date(date.getFullYear(), date.getMonth()+1, 1);
+    setDate(day)
+  }
 
   return (
     <Grid
@@ -89,10 +124,25 @@ export default function Calendar(props) {
     justify="center"
     alignItems="center"
     >
+      <Grid
+      container
+      direction="row"
+      justify="space-between"
+      alignItems="center"
+      className={classes.navbar}
+      >
+        <Button variant="contained" onClick={handleOnSubmitLeft} className={classes.button}><ArrowBackIcon/></Button>
+        <div>
+          <Typography variant="h4" className={classes.month_year}>{months[month]}</Typography>
+          <Typography variant="h5" className={classes.month_year}>{year}</Typography>
+        </div>
+        <Button variant="contained" onClick={handleOnSubmitRight} className={classes.button}><ArrowForwardIcon/></Button>
+      </Grid>
+
       <Grid container item xs={12} spacing={3}>
-      {names.map((day)=>(
-        <Paper className={classes.paper}>{day}</Paper>
-      ))}
+        {names.map((day)=>(
+          <div className={classes.weekdayPaper}>{day}</div>
+        ))}
       </Grid>
 
       {result.map((row)=>(
