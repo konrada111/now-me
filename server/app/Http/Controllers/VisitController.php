@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Cabinet as CabinetResource;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Resources\Visit as VisitResource;
 use App\Models\Visit;
@@ -80,6 +82,36 @@ class VisitController extends Controller
             'message' => 'Visits succesfully returned',
             'visit' => new VisitResource($visit)
         ], 201);
+    }
+    public function getDailyVisits(Request $request){
+        $validator = Validator::make($request->all(), [
+            'employee_id' => 'required|exists:employees,id',
+            'day' => 'required|int',
+            'month' => 'required|int',
+            'year' => 'required|int',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        $dailyVisits = Visit::where('employee_id', $request->employee_id)->get();
+        $dVis = array();
+        foreach($dailyVisits as $dailyVisit) {
+            $start_time = new Carbon($dailyVisit->start);
+            if($start_time->day == $request->day && $start_time->month == $request->month && $start_time->year == $request->year){
+                array_push($dVis, $dailyVisit);
+            }
+        }
+        if(count($dVis) < 1){
+            return response()->json([
+            'message' => 'No visits that day'
+            ], 422);
+        }
+        else{
+            return response()->json([
+                'message' => 'Visits succesfully returned',
+                'dailyVisits' => VisitResource::collection($dVis)
+            ], 201);
+        }
     }
     /**
      * Display the specified resource.
