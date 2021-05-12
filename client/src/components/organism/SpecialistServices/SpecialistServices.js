@@ -8,12 +8,22 @@ import SpecialistServicesItem from '../../molecules/SpecialistServicesItem/Speci
 
 const SpecialistServices = () => {
   const [services, setServices] = useState([]);
+  const [specialist, setSpecialist] = useState([]);
+
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      await axios.get('http://127.0.0.1:8000/api/services-by-employee/2').then((response) => console.log(response.data));
+      await axios.get(`http://127.0.0.1:8000/api/employee/${id}`).then((response) => setSpecialist(response.data.employee));
     };
     fetchEmployees();
+  }, []);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      await axios.get(`http://127.0.0.1:8000/api/services-by-employee/${id}`).then((response) => setServices(response.data.services));
+    };
+    fetchServices();
   }, []);
 
   return (
@@ -23,14 +33,14 @@ const SpecialistServices = () => {
           <AccountCircleIcon />
         </Icon>
         <PersonalData>
-          <span>Gosia</span>
-          <span>Andrzejewicz</span>
+          <span>{specialist.firstName}</span>
+          <span>{specialist.lastName}</span>
         </PersonalData>
-        <ProffesionName>Piosenkarka</ProffesionName>
+        <ProffesionName>{specialist.profession}</ProffesionName>
       </Profile>
       <Services>
         <h1>Services: </h1>
-        {/*<SpecialistServicesItem services={services} />*/}
+        <SpecialistServicesItem services={services} />
       </Services>
     </MainWrapper>
   );
