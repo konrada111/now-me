@@ -7,7 +7,7 @@ const Specialist = () => {
   const [specialists, setSpecialists] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [filteredSpecialists, setFilteredSpecialists] = useState([]);
-
+  
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8000/api/employees')
@@ -28,7 +28,6 @@ const Specialist = () => {
       <Input value={searchValue} placeholder="Choose your profession..." onChange={handleSelectChange} />
       {specialists.length !== 0 && searchValue.length === 0 ? <SpecialistList data={specialists} /> : null}
       {searchValue.length !== 0 ? <SpecialistList data={filteredSpecialists} /> : null}
-      
     </Container>
   );
 };

@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const token = localStorage.getItem('token') ? localStorage.getItem('token') : null;
+
+const role = localStorage.getItem('role') ? localStorage.getItem('role') : null;
+
 export const appSlice = createSlice({
   name: 'app',
   initialState: {
-    userToken: null,
-    userRole: null,
+    userToken: token,
+    userRole: role,
   },
   reducers: {
     enterUserToken: (state, action) => {
