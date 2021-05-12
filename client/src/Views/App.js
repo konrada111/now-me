@@ -38,7 +38,7 @@ function App() {
             <Route path="/specialist" exact>
               <Specialist />
             </Route>
-            <Route path="/specialist/xd" exact>
+            <Route path="/specialist/:id" exact>
               <SpecialistServices />
             </Route>
           </Switch>
