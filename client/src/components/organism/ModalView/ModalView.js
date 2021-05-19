@@ -6,11 +6,18 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const ModalView = ({ isOpen, setIsOpen }) => {
+const ModalView = ({ isOpen, setIsOpen, day, month, year }) => {
   const { id, service } = useParams();
   const [specialist, setSpecialist] = useState('');
   const [serviceData, setServiceData] = useState('');
-
+  const [visits, setVisits] = useState([]);
+  
+  const date = {
+    employee_id: id,
+    day: 3,
+    month: 5,
+    year: 2021,
+  };
   useEffect(() => {
     const fetchEmployee = async () => {
       await axios.get(`http://127.0.0.1:8000/api/employee/${id}`).then((response) => setSpecialist(response.data.employee));
@@ -22,6 +29,18 @@ const ModalView = ({ isOpen, setIsOpen }) => {
     };
     fetchService();
   }, []);
+
+  useEffect(() => {
+    const fetchVisits = async () => {
+      await axios
+        .post(`http://127.0.0.1:8000/api/dailyVisits`, date)
+        .then((response) => console.log(response))
+        .catch((err) => console.log(err));
+    };
+
+    fetchVisits();
+  }, []);
+
   return (
     <ModalWrapper isOpen={isOpen} appElement={document.getElementById('root')}>
       <InfoWrapper>
