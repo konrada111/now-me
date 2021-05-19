@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailController;
-use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\OpinionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -103,4 +103,10 @@ Route::group([
     'middleware' => 'is.admin',
 ], function($router){
     Route::post('/emails',[EmailController::class,'sendEmails']);
+});
+// Opinie
+Route::group([
+], function($router){
+    Route::post('/opinion',[OpinionController::class,'createOpinion']);
+    Route::get('/opinions/{id}',[OpinionController::class,'getEmployeeOpinions']);
 });
