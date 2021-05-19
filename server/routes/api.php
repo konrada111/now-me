@@ -96,7 +96,7 @@ Route::group([
     Route::get('/visit/{id}',[VisitController::class,'getSingleVisit']);
     Route::post('/visit',[VisitController::class,'createVisit']);
     Route::delete('/visit/{id}',[VisitController::class,'destroyVisit']);
-    Route::get('/dailyVisits',[VisitController::class,'getDailyVisits']);
+    Route::post('/dailyVisits',[VisitController::class,'getDailyVisits']);
 });
 // Maile
 Route::group([
