@@ -75,12 +75,14 @@ export default function Calendar(props) {
 
   const [date, setDate] = useState(new Date(props.date));
   const [result, setResult] = useState([]);
+  const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
 
   useEffect(() => {
     setMonth(date.getMonth());
     setYear(date.getFullYear());
+    setDay(date.getDate());
     let firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     let lastDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 0);
     let temp = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
@@ -114,7 +116,6 @@ export default function Calendar(props) {
     let day = new Date(date.getFullYear(), date.getMonth() + 1, 1);
     setDate(day);
   }
-
   return (
     <>
       <Grid container direction="row" justify="center" alignItems="center">
@@ -155,7 +156,7 @@ export default function Calendar(props) {
           </Grid>
         ))}
       </Grid>
-      {modalIsOpen ? <ModalView isOpen={modalIsOpen} setIsOpen={setIsOpen} /> : null}
+      {modalIsOpen ? <ModalView isOpen={modalIsOpen} setIsOpen={setIsOpen} day={day} month={month} year={year} /> : null}
     </>
   );
 }
