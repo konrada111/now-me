@@ -104,7 +104,7 @@ class VisitController extends Controller
         if(count($dVis) < 1){
             return response()->json([
             'message' => 'No visits that day'
-            ], 422);
+            ]);
         }
         else{
             return response()->json([
