@@ -5,6 +5,7 @@ import axios from 'axios';
 import { MainWrapper, Icon, Profile, Services, PersonalData, ProffesionName } from './SpecialistServices.style';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SpecialistServicesItem from '../../molecules/SpecialistServicesItem/SpecialistServicesItem';
+import StarRating from '../../molecules/StarRating/StarRating';
 
 const SpecialistServices = () => {
   const [services, setServices] = useState([]);
@@ -42,6 +43,7 @@ const SpecialistServices = () => {
         <h1>Services: </h1>
         <SpecialistServicesItem services={services} />
       </Services>
+      <StarRating />
     </MainWrapper>
   );
 };
