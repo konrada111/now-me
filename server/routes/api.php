@@ -9,6 +9,7 @@ use App\Http\Controllers\CabinetController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VisitController;
+use App\Http\Controllers\SmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,3 +111,7 @@ Route::group([
     Route::post('/opinion',[OpinionController::class,'createOpinion']);
     Route::get('/opinions/{id}',[OpinionController::class,'getEmployeeOpinions']);
 });
+
+// Smsy
+Route::get('/sms/{id}',[SmsController::class,'sendSms']);
+
