@@ -41,7 +41,9 @@ class VisitController extends Controller
                 $diffStart = $dStart->diffInMinutes($start_time);
                 $diffEnd = $dEnd->diffInMinutes($start_time);
                 if(($diffStart + $diffEnd) == $dStart->diffInMinutes($dEnd)){
-                    $flag = 1;
+                    if($vis->employee_id == $request->employee_id){
+                        $flag = 1;
+                    }
                 }
             }
         }
@@ -104,7 +106,7 @@ class VisitController extends Controller
         if(count($dVis) < 1){
             return response()->json([
             'message' => 'No visits that day'
-            ], 422);
+             ] );
         }
         else{
             return response()->json([

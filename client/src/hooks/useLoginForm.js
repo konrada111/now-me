@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { enterUserToken, enterUserRole } from '../features/appSlice';
+import { enterUserToken, enterUserRole, enterUserId } from '../features/appSlice';
 
 const initialFormState = {
   email: '',
@@ -38,6 +38,7 @@ const useLoginForm = () => {
           password: formValues.password,
         })
         .then((response) => {
+          console.log(response.data.user.id);
           if (response.status === 200) {
             dispatch(
               enterUserToken({
@@ -49,9 +50,14 @@ const useLoginForm = () => {
                 userRole: response.data.user.role,
               })
             );
+            dispatch(
+              enterUserId({
+                id: response.data.user.id,
+              })
+            );
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('role', response.data.user.role);
-
+            localStorage.setItem('userId', response.data.user.id);
             Swal.fire({
               icon: 'success',
               title: 'Successful login',
