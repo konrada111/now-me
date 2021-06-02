@@ -41,7 +41,9 @@ class VisitController extends Controller
                 $diffStart = $dStart->diffInMinutes($start_time);
                 $diffEnd = $dEnd->diffInMinutes($start_time);
                 if(($diffStart + $diffEnd) == $dStart->diffInMinutes($dEnd)){
-                    $flag = 1;
+                    if($vis->employee_id == $request->employee_id){
+                        $flag = 1;
+                    }
                 }
             }
         }
