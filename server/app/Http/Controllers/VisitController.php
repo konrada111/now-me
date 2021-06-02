@@ -19,6 +19,7 @@ class VisitController extends Controller
      */
     public function createVisit(Request $request)
     {
+        print_r('jestem');
         $validator = Validator::make($request->all(), [
             'employee_id' => 'required|exists:employees,id',
             'user_id' => 'required|exists:users,id',
@@ -30,10 +31,10 @@ class VisitController extends Controller
             return response()->json($validator->errors(), 422);
         }
         $flag = 0;
-        $start_time = new Carbon($request->start);
-        $end_time = new Carbon($request->end);
         $allVisits = Visit::all();
         foreach ($allVisits as $vis){
+            $start_time = new Carbon($request->start);
+            $end_time = new Carbon($request->end);
             $dStart = new Carbon($vis->start);
             $dEnd = new Carbon($vis->end);
             for( $i = 0; $i < ($start_time->diffInMinutes($end_time )) + 1; $i= $i + 10) {
@@ -60,13 +61,13 @@ class VisitController extends Controller
                 return response()->json([
                     'message' => 'Visit successfully created',
                     'visit' => new VisitResource($visit)
-                ], 201);
+                ]);
             }
         }
         else{
             return response()->json([
                 'message' => 'Visit with that datetime already exists'
-            ], 422);
+            ]);
         }
     }
 
