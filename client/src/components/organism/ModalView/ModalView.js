@@ -5,19 +5,28 @@ import Modal from 'react-modal';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { selectUserId } from '../../../features/appSlice';
+
+import { TextField } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 const ModalView = ({ isOpen, setIsOpen, day, month, year }) => {
   const { id, service } = useParams();
   const [specialist, setSpecialist] = useState('');
   const [serviceData, setServiceData] = useState('');
   const [visits, setVisits] = useState([]);
-  
+  const [time, setTime] = useState('07:30');
+  const [startDate] = useState(`${year}-${month.toString().length < 2 ? '0' + month : month}-${day.toString().length < 2 ? '0' + day : day}`);
+
+  const userId = useSelector(selectUserId);
+
   const date = {
     employee_id: id,
-    day: 3,
-    month: 5,
-    year: 2021,
+    day: day,
+    month: month + 1,
+    year: parseInt(year),
   };
+
   useEffect(() => {
     const fetchEmployee = async () => {
       await axios.get(`http://127.0.0.1:8000/api/employee/${id}`).then((response) => setSpecialist(response.data.employee));
@@ -30,16 +39,37 @@ const ModalView = ({ isOpen, setIsOpen, day, month, year }) => {
     fetchService();
   }, []);
 
-  useEffect(() => {
-    const fetchVisits = async () => {
-      await axios
-        .post(`http://127.0.0.1:8000/api/dailyVisits`, date)
-        .then((response) => console.log(response))
-        .catch((err) => console.log(err));
-    };
+  // useEffect(() => {
+  //   const fetchVisits = async () => {
+  //     await axios
+  //       .post(`http://127.0.0.1:8000/api/dailyVisits`, date)
+  //       .then((response) => console.log(response))
+  //       .catch((err) => console.log(err));
+  //   };
 
-    fetchVisits();
-  }, []);
+  //   fetchVisits();
+  // }, []);
+
+  const handleReserveVisit = () => {
+    const newTime = new Date(new Date('1970/01/01 ' + time).getTime() + (serviceData.service_length / 60) * 60000).toLocaleTimeString('en-UK', { hour: '2-digit', minute: '2-digit', hour12: false });
+    axios
+      .post(`http://127.0.0.1:8000/api/visit`, {
+        employee_id: id,
+        user_id: userId,
+        service_id: service,
+        start: '2021-04-13 10:50',
+        end: '2021-04-13 11:50',
+        // start: `${startDate} ${time}`,
+        // end: `${startDate} ${newTime}`,
+      })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+    // console.log(id);
+    // console.log(userId);
+    // console.log(service);
+    // console.log(`${startDate} ${time}`);
+    // console.log(`${startDate} ${newTime}`);
+  };
 
   return (
     <ModalWrapper isOpen={isOpen} appElement={document.getElementById('root')}>
@@ -52,6 +82,21 @@ const ModalView = ({ isOpen, setIsOpen, day, month, year }) => {
         <span>{serviceData.price} zł</span>
         <span>{serviceData.service_length / 60} min</span>
       </InfoWrapper>
+      <TextField
+        id="time"
+        label="Time selection"
+        type="time"
+        defaultValue="07:30"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputProps={{
+          step: 300, // 5 min
+        }}
+        size="medium"
+        onChange={(e) => setTime(e.target.value)}
+      />
+      <Button onClick={handleReserveVisit}>Reserve</Button>
       <Button onClick={() => setIsOpen(false)}>Close </Button>
     </ModalWrapper>
   );

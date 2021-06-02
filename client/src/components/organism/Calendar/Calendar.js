@@ -75,6 +75,7 @@ export default function Calendar(props) {
 
   const [date, setDate] = useState(new Date(props.date));
   const [result, setResult] = useState([]);
+
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
@@ -116,6 +117,10 @@ export default function Calendar(props) {
     let day = new Date(date.getFullYear(), date.getMonth() + 1, 1);
     setDate(day);
   }
+  const handleDayClick = (day) => {
+    setIsOpen(true);
+    setDay(day);
+  };
   return (
     <>
       <Grid container direction="row" justify="center" alignItems="center">
@@ -148,7 +153,7 @@ export default function Calendar(props) {
               day === 0 ? (
                 <Paper className={classes.emptyPaper}></Paper>
               ) : (
-                <Paper className={classes.paper} onClick={() => setIsOpen(true)}>
+                <Paper className={classes.paper} onClick={() => handleDayClick(day)}>
                   {day}
                 </Paper>
               )
