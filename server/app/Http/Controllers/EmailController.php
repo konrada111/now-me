@@ -25,14 +25,21 @@ class EmailController extends Controller
             foreach($visits as $vis){
                 $visitTime = new Carbon($vis->start);
                 $diff = $currentTime->diffInHours($visitTime);
+                $flag = 0;
                 if($diff < 24){
                     $user = User::findOrFail($vis->user_id);
                     Mail::to($user->email)->send(new ReminderMail($vis, $user));
+                    $flag = 1;
                 }
+            }
+            if($flag == 0){
+                return response()->json([
+                    'message' => 'There are no visits to be reminded about',
+                ]);
             }
             return response()->json([
                 'message' => 'Reminder mails successfully sent',
-            ], 422);
+            ]);
         }
         else{
             return response()->json([

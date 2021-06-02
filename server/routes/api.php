@@ -101,7 +101,7 @@ Route::group([
 });
 // Maile
 Route::group([
-    'middleware' => 'is.admin',
+    // 'middleware' => 'is.admin',
 ], function($router){
     Route::post('/emails',[EmailController::class,'sendEmails']);
 });

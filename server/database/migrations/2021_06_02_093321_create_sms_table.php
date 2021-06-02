@@ -17,7 +17,7 @@ class CreateSmsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('visit_id');
-            $table->date('visit_date');
+            $table->dateTime('visit_date');
             $table->string('employee_name');
             $table->string('employee_second_name');
             $table->string('employee_profession');
