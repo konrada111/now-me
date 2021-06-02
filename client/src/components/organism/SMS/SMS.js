@@ -17,7 +17,6 @@ const SMS = () => {
     });
     setInputId('');
   };
-  console.log(smses);
   return (
     <Container>
       <Form as="form" onSubmit={handleSubmit}>
