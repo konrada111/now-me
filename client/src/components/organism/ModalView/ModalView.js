@@ -57,18 +57,11 @@ const ModalView = ({ isOpen, setIsOpen, day, month, year }) => {
         employee_id: id,
         user_id: userId,
         service_id: service,
-        start: '2021-04-13 10:50',
-        end: '2021-04-13 11:50',
-        // start: `${startDate} ${time}`,
-        // end: `${startDate} ${newTime}`,
+        start: `${startDate} ${time}`,
+        end: `${startDate} ${newTime}`,
       })
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
-    // console.log(id);
-    // console.log(userId);
-    // console.log(service);
-    // console.log(`${startDate} ${time}`);
-    // console.log(`${startDate} ${newTime}`);
   };
 
   return (
