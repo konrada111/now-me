@@ -6,6 +6,7 @@ import ProtectedRoute from 'ProtectedRoute/ProtectedRoute';
 import Services from 'components/organism/Services/Services';
 import EmployeesList from '../components/organism/EmployeesList/EmployeesList';
 import SMS from 'components/organism/SMS/SMS';
+import Emails from 'components/organism/Emails/Emails';
 
 const AdminPanel = () => {
   return (
@@ -15,6 +16,7 @@ const AdminPanel = () => {
       <ProtectedRoute exact path="/admin-panel/specialists" component={EmployeesList} isAuth={'admin'} />
       <ProtectedRoute exact path="/admin-panel/services" component={Services} isAuth={'admin'} />
       <ProtectedRoute exact path="/admin-panel/SMS" component={SMS} isAuth={'admin'} />
+      <ProtectedRoute exact path="/admin-panel/emails" component={Emails} isAuth={'admin'} />
     </Wrapper>
   );
 };
