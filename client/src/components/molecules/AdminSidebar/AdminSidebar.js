@@ -4,6 +4,7 @@ import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import AddRoundedIcon from '@material-ui/icons/AddRounded';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import SmsIcon from '@material-ui/icons/Sms';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import { NavLink } from 'react-router-dom';
 
 function Siddebar() {
@@ -31,6 +32,10 @@ function Siddebar() {
       <StyledLink to={'/admin-panel/SMS'}>
         <SmsIcon />
         <h3>SMS</h3>
+      </StyledLink>
+      <StyledLink to={'/admin-panel/emails'}>
+        <MailOutlineIcon />
+        <h3>E-mails</h3>
       </StyledLink>
     </SidebarContainer>
   );
